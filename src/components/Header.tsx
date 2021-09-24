@@ -1,15 +1,15 @@
-import Genre from '../models/Genre';
+import Genere from '../models/Genere';
 
 import '../styles/header.scss';
 
 interface HeaderProps {
-  selectedGenre: Genre;
+  selectedGenere: Genere;
 }
 
-export function Header({selectedGenre}: HeaderProps) {
+export function Header({selectedGenere}: HeaderProps) {
   return(
     <header>
-        <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
+        <span className="category">Categoria:<span> {selectedGenere.title}</span></span>
     </header>
   );
 }

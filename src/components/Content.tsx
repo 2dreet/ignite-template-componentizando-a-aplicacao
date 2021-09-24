@@ -1,19 +1,35 @@
-import Genre from '../models/Genre';
+import { useEffect, useState } from 'react';
+import { api } from '../services/api';
+import Genere from '../models/Genere';
 import Movie from '../models/Movie';
 import { MovieCard } from '../components/MovieCard';
 import { Header } from '../components/Header';
+import { useGenereContext } from '../hooks/GenereContext';
 
 import '../styles/content.scss';
 
-interface ContentProps { 
-  selectedGenre: Genre;
-  movies: Movie[];
-}
+export function Content() {
 
-export function Content({ selectedGenre, movies }: ContentProps) {
+  const { genereId } = useGenereContext();
+
+  const [selectedGenere, setSelectedGenere] = useState<Genere>({} as Genere);
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() =>{
+    if(genereId) {
+      api.get<Movie[]>(`movies/?Genre_id=${genereId}`).then(response => {
+        setMovies(response.data);
+      });
+
+      api.get<Genere>(`genres/${genereId}`).then(response => {
+        setSelectedGenere(response.data);
+      })
+    }
+  }, [genereId]);
+
   return (
     <div className="container">
-        <Header selectedGenre={selectedGenre} />
+        <Header selectedGenere={selectedGenere} />
         <main>
           <div className="movies-list">
             {movies.map(movie => (
